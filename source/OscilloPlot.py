@@ -75,7 +75,7 @@ def plot_channels(x_label = 'Time (s)', y_label = 'Magnitude', title = ' '):
         if channel_array.channel_array[i] is not None:
             plt.plot(channel_array.channel_array[i].updated_time, channel_array.channel_array[i].updated_ampl, label=channel_array.channel_array[i].label)
 
-            print('Channel ', i, ' plotted succesfully' )
+            print('Channel ', i, ' plotted successfully' )
 
     #Labels and titles      
     plt.xlabel(x_label)
