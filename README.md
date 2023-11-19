@@ -1,6 +1,6 @@
 # Oscilloscope Data Plotter
 
-![Project Image](project_images/main_image.svg)
+![Project Image](screenshots/main_image.svg)
 
 This Python script, `OscilloPlot.py`, generates plots from oscilloscope data stored in CSV files. It provides users the capability to visualize up to four channels simultaneously, scale and shift the amplitude, and customize plot attributes like title, x-label, and y-label.
 
