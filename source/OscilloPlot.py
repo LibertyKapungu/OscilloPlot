@@ -14,11 +14,11 @@ class ChannelData:
         self.channel_num = channel_number
         self.label = f"Channel {self.channel_num} x1"
 
-        self.tim_axis = []
-        self.ampl_axis = []
+        self.csv_time_values = []
+        self.csv_amplitude_values = []
 
-        self.updated_ampl = []
-        self.updated_time = []
+        self.amplitude_axis = []
+        self.time_axis = []
 
         self.time_shift = 0.0
         self.amp_shift = 0.0
@@ -37,23 +37,23 @@ class ChannelData:
                 time = np.float64(column[3])
                 ampl = np.float64(column[4])
 
-                self.tim_axis.append(time)
-                self.ampl_axis.append(ampl)
+                self.csv_time_values.append(time)
+                self.csv_amplitude_values.append(ampl)
 
-            self.amplitude_axis(1.0, 0.0)
-            self.time_axis(1.0, 0.0)
+            self.amplitude_axis_update(1.0, 0.0)
+            self.time_axis_update(1.0, 0.0)
 
-        if not self.ampl_axis and not self.tim_axis:
+        if not self.csv_amplitude_values and not self.csv_time_values:
             print('Channel ', self.channel_num, ' empty')    
         
-    def amplitude_axis(self, scale=1.0, shift=0.0):
-        self.updated_ampl = [value * scale + shift for value in self.ampl_axis]
+    def amplitude_axis_update(self, scale=1.0, shift=0.0):
+        self.amplitude_axis = [value * scale + shift for value in self.csv_amplitude_values]
         self.ampl_scale = scale
         self.label = f"{self.label[:self.label.index('x')]}" + f"x{self.ampl_scale}"
 
-    def time_axis(self, scale = 1.0, shift = 0.0):
+    def time_axis_update(self, scale = 1.0, shift = 0.0):
         
-        self.updated_time = [time * scale + shift for time in self.tim_axis]
+        self.time_axis = [time * scale + shift for time in self.csv_time_values]
         self.time_scale = scale
 
 class ChannelArray:
@@ -73,7 +73,7 @@ def plot_channels(x_label = 'Time (s)', y_label = 'Magnitude', title = ' '):
 
     for i in range(1, 5):
         if channel_array.channel_array[i] is not None:
-            plt.plot(channel_array.channel_array[i].updated_time, channel_array.channel_array[i].updated_ampl, label=channel_array.channel_array[i].label)
+            plt.plot(channel_array.channel_array[i].time_axis, channel_array.channel_array[i].amplitude_axis, label=channel_array.channel_array[i].label)
 
             print('Channel ', i, ' plotted successfully' )
 
@@ -181,7 +181,6 @@ while True:
                 volts_scale_key = f'volts_scale_{i}'
                 ampl_shift_key = f'volts_shift_{i}'
 
-
                 try:
                     amplitude_shift = float(values[ampl_shift_key])
                 except:
@@ -194,7 +193,7 @@ while True:
                     volts_scale = 1.0
                     print('~ Invalid scale Input: default 1.0')
 
-                channel_array.channel_array[i].amplitude_axis(volts_scale, amplitude_shift)
+                channel_array.channel_array[i].amplitude_axis_update(volts_scale, amplitude_shift)
 
         plot_channels(x_label, y_label, title)
         plt.show()
